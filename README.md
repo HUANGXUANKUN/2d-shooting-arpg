@@ -20,6 +20,6 @@ Round3 Boss Fight 2\
 Lost Image Display\
 ![](screenshot/round3Lost.png)
 
-One of the hidden map\
+One of the hidden maps is activated\
 ![](screenshot/wisdomWinPathEasy.png)
 
