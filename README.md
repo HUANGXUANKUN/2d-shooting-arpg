@@ -2,13 +2,13 @@
 
 run Game_Final.py
 
-Choosing the mode 
+Choosing the mode\
 ![](screenshot/starting.png)
 
-Round 1 
+Round 1\
 ![](screenshot/round1.png)
 
-Round 2 
+Round 2\
 ![](screenshot/round2.png)
 
 Round 3 Boss Fight 1 
