@@ -11,15 +11,15 @@ Round 1\
 Round 2\
 ![](screenshot/round2.png)
 
-Round 3 Boss Fight 1 
+Round 3 Boss Fight 1\
 ![](screenshot/boss1.png)
 
-Round3 Boss Fight 2 
+Round3 Boss Fight 2\
 ![](screenshot/boss2.png)
 
-Lost Image Display 
+Lost Image Display\
 ![](screenshot/round3Lost.png)
 
-One of the hidden map  
+One of the hidden map\
 ![](screenshot/wisdomWinPathEasy.png)
 
