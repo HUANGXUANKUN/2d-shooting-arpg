@@ -716,6 +716,7 @@ while run:
             run = False
     
     drawGameWindow()
+    win.blit(black,(0,0))
     pygame.display.update()
   
 
