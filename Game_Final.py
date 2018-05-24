@@ -711,8 +711,9 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    win.blit(black,(0,0))
+    
     drawGameWindow()
+    win.blit(black,(0,0))
     pygame.display.update()
   
 
