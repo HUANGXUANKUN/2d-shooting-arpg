@@ -27,7 +27,6 @@ bossAWalkRight = loadImageList('image/sprites/boss1','BossAR0','png',8)
 bossBWalkLeft = loadImageList('image/sprites/boss2','BossBL0','png',8)
 bossBWalkRight = loadImageList('image/sprites/boss2','BossBR0','png',8)
 
-
 bgMode = pygame.image.load(os.path.join("image/backgrounds",'modeChoose.png'))
 bg1 = pygame.image.load(os.path.join("image/backgrounds",'bg1.png'))
 bg2 = pygame.image.load(os.path.join("image/backgrounds",'bg2.png'))
@@ -51,13 +50,11 @@ bulletA = pygame.image.load(os.path.join('image/features','BulletA.png'))
 bulletB = pygame.image.load(os.path.join('image/features','BulletB.png'))
 heartImage = pygame.image.load(os.path.join('image/features','heart.png'))
 
-
 bulletSound = pygame.mixer.Sound(os.path.join('audios','bullet.wav'))
 hitSound = pygame.mixer.Sound(os.path.join('audios','hit.wav'))
 music = pygame.mixer.music.load(os.path.join('audios','music.mp3'))
 pygame.mixer.music.play(-1)
 font1 = pygame.font.SysFont('comicsans',32,True,True)
-
 
 class mainPlayer(object):
     def __init__(self, x, y, width, height, vel, lifeLeft, walkLeft,walkRight,bulletImage):
@@ -175,7 +172,6 @@ class mainPlayer(object):
                     win.blit(self.walkRight[self.walkCount//3],(self.x,self.y))
                     self.walkCount += 1
             
-
             self.hitbox = (round(self.x + self.width * 0.02), round(self.y + self.width * 0.02), round(self.width * 0.96), round(self.height * 0.96))
 ##            pygame.draw.rect(win,(255,0,0),self.hitbox,2)
 
@@ -210,8 +206,7 @@ class enemy1(object):
         self.fullHealth = health
         self.isDefeated = False
         self.walkLeft = walkLeft
-        self.walkRight = walkRight
-        
+        self.walkRight = walkRight        
 
     def move(self):
         if self.x + self.width + self.vel >= self.rightEnd:
@@ -233,15 +228,13 @@ class enemy1(object):
                     if bullet.x + bullet.radius > self.hitbox[0] and bullet.x - bullet.radius < self.hitbox [0] + self.hitbox[2]:
                         hitSound.play()
                         player.bullets.pop(player.bullets.index(bullet))
-                        self.health -= 1
-                                                    
+                        self.health -= 1                                         
 
     def ifCollide(self):
         if player.hitbox[1] < self.hitbox[1] + self.hitbox[3] and player.hitbox[1] + player.hitbox[3] > self.hitbox[1]:
             if player.hitbox[0] + player.hitbox[2] > self.hitbox[0] and player.hitbox[0] < self.hitbox[0] + self.hitbox[2]:
                 player.collision = True
-
-        
+                
     def draw(self,win):
 
         if self.health >= 1:
@@ -259,11 +252,11 @@ class enemy1(object):
                 win.blit(self.walkLeft[self.walkCount //3],(self.x,self.y))
                 self.walkCount += 1
 
-
             self.hitbox =(round(self.x + self.width * 0.1), round(self.y + self.width * 0.1), round(self.width * 0.8), round(self.height * 0.8))
             pygame.draw.rect(win,(250,0,0),(self.hitbox[0] - 10,self.hitbox[1]-10,self.hitbox[2] + 20,8)) 
             pygame.draw.rect(win,(0,128,0),(self.hitbox[0] - 10,self.hitbox[1]-10,round(self.health / self.fullHealth * (self.hitbox[2]+ 20)) ,8))    
 ##            pygame.draw.rect(win,(255,0,0),(self.hitbox),2)
+
 
 class enemy2(object):
         def __init__(self,x,y,width,height,topEnd,bottomEnd,facing,vel,health,walkLeft,walkRight):
@@ -293,7 +286,6 @@ class enemy2(object):
                 self.walkCount = 0
               
             self.y += self.vel * self.facing
-
         
         def hit(self):
             if self.health >= 1 and player.lifeLeft >= 1:
@@ -302,14 +294,12 @@ class enemy2(object):
                     if bullet.y - bullet.radius < self.hitbox[1] + self.hitbox[3] and bullet.y + bullet.radius > self.hitbox[1]:
                         if bullet.x + bullet.radius > self.hitbox[0] and bullet.x - bullet.radius < self.hitbox [0] + self.hitbox[2]:
                             hitSound.play()
-                            player.bullets.pop(player.bullets.index(bullet))
-                                                                                   
+                            player.bullets.pop(player.bullets.index(bullet))                                                                                   
 
         def ifCollide(self):
             if player.hitbox[0] + player.hitbox[2] > self.hitbox[0] and player.hitbox[0] < self.hitbox[0] + self.hitbox[2]:
                 if player.hitbox[1] < self.hitbox[1] + self.hitbox[3] and player.hitbox[1] + player.hitbox[3] > self.hitbox[1]:
                     player.collision = True
-
             
         def draw(self,win):
             if self.health >= 1:
@@ -331,8 +321,7 @@ class enemy2(object):
 ##                pygame.draw.rect(win,(255,0,0),(self.hitbox),2)
         
 
-class boss1(object):
-    
+class boss1(object):   
     def __init__(self,x,y,width,height,facing,health,walkLeft,walkRight,bulletVel,bulletImage):
         self.x = x
         self.y = y
@@ -359,8 +348,7 @@ class boss1(object):
                 if bullet.x + bullet.radius > self.hitbox[0] and bullet.x - bullet.radius < self.hitbox [0] + self.hitbox[2]:
                     hitSound.play()
                     player.bullets.pop(player.bullets.index(bullet))
-                    self.health -= 1
-                                                
+                    self.health -= 1                                                
 
     def ifCollide(self):
         if player.hitbox[1] < self.hitbox[1] + self.hitbox[3] and player.hitbox[1] + player.hitbox[3] > self.hitbox[1]:
@@ -384,9 +372,7 @@ class boss1(object):
                 self.bullets.pop(self.bullets.index(bullet))
                 
             elif not (bullet.x <= winSize[0] - bullet.vel and bullet.x >= bullet.vel + 100):
-                self.bullets.pop(self.bullets.index(bullet))
-                
-                
+                self.bullets.pop(self.bullets.index(bullet))                              
                 
     def draw(self,win):
         if self.health >= 1:
@@ -432,11 +418,9 @@ class boss2(object):
         self.acceleration = acceleration
         self.isDefeated = False
         self.walkLeft = walkLeft
-        self.walkRight = walkRight
-        
+        self.walkRight = walkRight        
         
     def move(self):
-
         if self.x + self.width + self.vel >= self.rightEnd:
             self.vel = 0
             self.facing = -1
@@ -467,10 +451,8 @@ class boss2(object):
         if player.hitbox[1] < self.hitbox[1] + self.hitbox[3] and player.hitbox[1] + player.hitbox[3] > self.hitbox[1]:
             if player.hitbox[0] + player.hitbox[2] > self.hitbox[0] and player.hitbox[0] < self.hitbox[0] + self.hitbox[2]:
                 player.collision = True
-
         
     def draw(self,win):
-
         if self.health >= 1:
             self.ifCollide()
             self.move()
@@ -490,7 +472,6 @@ class boss2(object):
             pygame.draw.rect(win,(250,0,0),(self.hitbox[0] - 10,self.hitbox[1]-10,self.hitbox[2] + 20,8)) 
             pygame.draw.rect(win,(0,128,0),(self.hitbox[0] - 10,self.hitbox[1]-10,round(self.health / self.fullHealth * (self.hitbox[2]+ 20)) ,8))    
 ##            pygame.draw.rect(win,(255,0,0),(self.hitbox),2)
-
             
 def setModeEasy():
     global player_health, enemy1_vel, enemy2A_vel,enemy2B_vel,enemy2C_vel,enemy2D_vel, bossA_bulletVel,bossB_health, bossB_acceleration
@@ -515,7 +496,6 @@ def setModeHard():
     bossA_bulletVel = 6
     bossB_health = 30
     bossB_acceleration = 3
-
 
 def defineFigures():
     setModeEasy()
@@ -546,8 +526,7 @@ def __init__figures():
     enemyI.__init__(550 , 200, 87, 110, 60, 400,-1,enemy2D_vel,10, ghostFaceLeft, ghostFaceRight)
     bossA.__init__(630 - 180, 400 - 200, 180, 200, -1, 20, bossAWalkLeft, bossAWalkRight,bossA_bulletVel, bulletB)
     bossB.__init__(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, bossBWalkLeft, bossBWalkRight)
-
-    
+  
 def drawGameWindow():
     global roundNo,mode,isLost,isWin,isWisdomWin,isPerfectWin,isPeaceWin
                         
@@ -717,8 +696,5 @@ while run:
     
     drawGameWindow()
     pygame.display.update()
-  
-
+    
 pygame.quit()
-
-
