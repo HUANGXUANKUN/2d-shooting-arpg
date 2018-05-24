@@ -1,9 +1,11 @@
-import pygame
+import pygame, os
 pygame.init()
 
 winSize = (640,480)
 win = pygame.display.set_mode(winSize)
 pygame.display.set_caption('Game of Thrones: Into the New World')
+
+black = pygame.image.load(os.path.join("screenshot/abc", "lalaland.png"))
 
 bgMode = pygame.image.load('modeChoose.png')
 bg1 = pygame.image.load('bg1.png')
@@ -595,14 +597,14 @@ def drawGameWindow():
 
             if not (isPeaceWin or isWisdomWin or isPerfectWin):
                 isWin = True
-                print('normal win at round4')
+##                print('normal win at round4')
 
         if isPeaceWin or isWisdomWin or isPerfectWin:
             if roundNo == 4:
                 if isPeaceWin:
                     win.blit(bgPeaceWinPath,(0,0))
                     player.draw(win)
-                    print('isPeaceWin = True, RoundNo = 4')
+##                    print('isPeaceWin = True, RoundNo = 4')
                 else:
                     if isWisdomWin:
                         roundNo += 1
@@ -616,13 +618,13 @@ def drawGameWindow():
                     else:
                         win.blit(bgWisdomWinPathHard,(0,0))
                     player.draw(win)
-                    print('isWisdomWin = True, RoundNo = 5')
+##                    print('isWisdomWin = True, RoundNo = 5')
                 else:
                     if isPerfectWin:
                         roundNo += 1
                     else:
                         isWin = True
-                        print('isWin at round 5')
+##                        print('isWin at round 5')
 
             if roundNo == 6:
                 if isPerfectWin:
@@ -631,18 +633,18 @@ def drawGameWindow():
                     else:
                         win.blit(bgPerfectWinPathHard,(0,0))
                     player.draw(win)
-                    print('isPerfect = True, RoundNo = 6')
+##                    print('isPerfect = True, RoundNo = 6')
                 else:
                     isWin = True
-                    print('isWin at round6')
+##                    print('isWin at round6')
 
             if roundNo == 7:
                 isWin = True
-                print('is win at round 7')
+##                print('is win at round 7')
 
         if player.x + player.vel > winSize[0]:
             roundNo += 1
-            print('roundNo' + str(roundNo))
+##            print('roundNo' + str(roundNo))
             player.x = player.rebornLoc[0]
             player.bullets = []
 
@@ -692,6 +694,7 @@ def drawGameWindow():
             isPerfectWin = False
             isPeaceWin = False
 
+##mainloop 
 clock = pygame.time.Clock()
 roundNo = 1
 mode = 0
@@ -708,7 +711,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
+    win.blit(black,(0,0))
     drawGameWindow()
     pygame.display.update()
   
