@@ -5,52 +5,58 @@ winSize = (640,480)
 win = pygame.display.set_mode(winSize)
 pygame.display.set_caption('Game of Thrones: Into the New World')
 
-black = pygame.image.load(os.path.join("screenshot/abc", "lalaland.png"))
+def loadImageList(directory,name,imageType,imageNo):
+    '''To load the sprite images into a list'''
+    imageList = []
+    for iteration in range(1,imageNo):
+        if iteration >= 10 and name[-1] == '0':
+            name = name[:-1]
+        imageList.append(pygame.image.load(os.path.join(directory,name+str(iteration)+'.'+imageType)))                        
+    return imageList
+    
+playerWalkLeft = loadImageList('image/sprites/player','L0','png',9)
+playerWalkRight = loadImageList('image/sprites/player','R0','png',9)
+globinWalkLeft = loadImageList('image/sprites/globin','globinL0','png',11)
+globinWalkRight = loadImageList('image/sprites/globin','globinR0','png',11)
+ghostFaceLeft = loadImageList('image/sprites/ghost','ghostL','png',8)
+ghostFaceRight = loadImageList('image/sprites/ghost','ghostR','png',8)
+monsterFaceLeft = loadImageList('image/sprites/monster','monsterL','png',8)
+monsterTurning = loadImageList('image/sprites/monster','monsterTurn','png',8)
+bossAWalkLeft = loadImageList('image/sprites/boss1','BossAL0','png',8)
+bossAWalkRight = loadImageList('image/sprites/boss1','BossAR0','png',8)
+bossBWalkLeft = loadImageList('image/sprites/boss2','BossBL0','png',8)
+bossBWalkRight = loadImageList('image/sprites/boss2','BossBR0','png',8)
 
-bgMode = pygame.image.load('modeChoose.png')
-bg1 = pygame.image.load('bg1.png')
-bg2 = pygame.image.load('bg2.png')
-bg3 = pygame.image.load('bg3.png')
-bg1Lost = pygame.image.load('bg1_Lost.png')
-bg2Lost = pygame.image.load('bg2_Lost.png')
-bg3Lost = pygame.image.load('bg3_Lost.png')
-bgWin = pygame.image.load('Win.png')
-bgWinHard = pygame.image.load('WinHard.png')
-bgWisdomWinPath = pygame.image.load('WisdomWinPath.png')
-bgWisdomWin = pygame.image.load('WisdomWin.png')
-bgWisdomWinPathHard = pygame.image.load('WisdomWinPathHard.png')
-bgWisdomWinHard = pygame.image.load('WisdomWinHard.png')
-bgPerfectWinPath = pygame.image.load('PerfectWinPath.png')
-bgPerfectWin = pygame.image.load('PerfectWin.png')
-bgPerfectWinPathHard = pygame.image.load('PerfectWinPathHard.png')
-bgPerfectWinHard = pygame.image.load('PerfectWinHard.png')
-bgPeaceWinPath = pygame.image.load('PeaceWinPath.png')
-bgPeaceWin = pygame.image.load('PeaceWin.png')
 
-heartImage = pygame.image.load('heart.png')
+bgMode = pygame.image.load(os.path.join("image/backgrounds",'modeChoose.png'))
+bg1 = pygame.image.load(os.path.join("image/backgrounds",'bg1.png'))
+bg2 = pygame.image.load(os.path.join("image/backgrounds",'bg2.png'))
+bg3 = pygame.image.load(os.path.join("image/backgrounds",'bg3.png'))
+bg1Lost = pygame.image.load(os.path.join("image/backgrounds",'bg1_Lost.png'))
+bg2Lost = pygame.image.load(os.path.join("image/backgrounds",'bg2_Lost.png'))
+bg3Lost = pygame.image.load(os.path.join("image/backgrounds",'bg3_Lost.png'))
+bgWin = pygame.image.load(os.path.join("image/backgrounds",'Win.png'))
+bgWinHard = pygame.image.load(os.path.join("image/backgrounds",'WinHard.png'))
+bgWisdomWinPath = pygame.image.load(os.path.join("image/backgrounds",'WisdomWinPath.png'))
+bgWisdomWin = pygame.image.load(os.path.join("image/backgrounds",'WisdomWin.png'))
+bgWisdomWinPathHard = pygame.image.load(os.path.join("image/backgrounds",'WisdomWinPathHard.png'))
+bgWisdomWinHard = pygame.image.load(os.path.join("image/backgrounds",'WisdomWinHard.png'))
+bgPerfectWinPath = pygame.image.load(os.path.join("image/backgrounds",'PerfectWinPath.png'))
+bgPerfectWin = pygame.image.load(os.path.join("image/backgrounds",'PerfectWin.png'))
+bgPerfectWinPathHard = pygame.image.load(os.path.join("image/backgrounds",'PerfectWinPathHard.png'))
+bgPerfectWinHard = pygame.image.load(os.path.join("image/backgrounds",'PerfectWinHard.png'))
+bgPeaceWinPath = pygame.image.load(os.path.join("image/backgrounds",'PeaceWinPath.png'))
+bgPeaceWin = pygame.image.load(os.path.join("image/backgrounds",'PeaceWin.png'))
+bulletA = pygame.image.load(os.path.join('image/features','BulletA.png'))
+bulletB = pygame.image.load(os.path.join('image/features','BulletB.png'))
+heartImage = pygame.image.load(os.path.join('image/features','heart.png'))
 
-playerWalkLeft = [pygame.image.load('L01.png'), pygame.image.load('L02.png'), pygame.image.load('L03.png'), pygame.image.load('L04.png'), pygame.image.load('L05.png'), pygame.image.load('L06.png'), pygame.image.load('L07.png'), pygame.image.load('L08.png'), pygame.image.load('L09.png')]
-playerWalkRight = [pygame.image.load('R01.png'), pygame.image.load('R02.png'), pygame.image.load('R03.png'), pygame.image.load('R04.png'), pygame.image.load('R05.png'), pygame.image.load('R06.png'), pygame.image.load('R07.png'), pygame.image.load('R08.png'), pygame.image.load('R09.png')]
-globinWalkLeft = [pygame.image.load('globinL01.png'), pygame.image.load('globinL02.png'), pygame.image.load('globinL03.png'), pygame.image.load('globinL04.png'), pygame.image.load('globinL05.png'), pygame.image.load('globinL06.png'), pygame.image.load('globinL07.png'), pygame.image.load('globinL08.png'), pygame.image.load('globinL09.png')]
-globinWalkRight = [pygame.image.load('globinR01.png'), pygame.image.load('globinR02.png'), pygame.image.load('globinR03.png'), pygame.image.load('globinR04.png'), pygame.image.load('globinR05.png'), pygame.image.load('globinR06.png'), pygame.image.load('globinR07.png'), pygame.image.load('globinR08.png'), pygame.image.load('globinR09.png')]
-ghostFaceLeft = [pygame.image.load('ghostL1.png'), pygame.image.load('ghostL2.png'), pygame.image.load('ghostL3.png'), pygame.image.load('ghostL4.png'), pygame.image.load('ghostL5.png'), pygame.image.load('ghostL6.png'), pygame.image.load('ghostL7.png'), pygame.image.load('ghostL8.png')]
-ghostFaceRight = [pygame.image.load('ghostR1.png'), pygame.image.load('ghostR2.png'), pygame.image.load('ghostR3.png'), pygame.image.load('ghostR4.png'), pygame.image.load('ghostR5.png'), pygame.image.load('ghostR6.png'), pygame.image.load('ghostR7.png'), pygame.image.load('ghostR8.png')]
-monsterFaceLeft = [pygame.image.load('monsterL1.png'), pygame.image.load('monsterL2.png'), pygame.image.load('monsterL3.png'), pygame.image.load('monsterL4.png'), pygame.image.load('monsterL5.png'), pygame.image.load('monsterL6.png'), pygame.image.load('monsterL7.png'), pygame.image.load('monsterL8.png')]
-monsterTurning = [pygame.image.load('monsterTurn1.png'), pygame.image.load('monsterTurn2.png'), pygame.image.load('monsterTurn3.png'), pygame.image.load('monsterTurn4.png'), pygame.image.load('monsterTurn5.png'), pygame.image.load('monsterTurn6.png'), pygame.image.load('monsterTurn7.png'), pygame.image.load('monsterTurn8.png')]
-bossAWalkLeft =  [pygame.image.load('BossAL01.png'), pygame.image.load('BossAL02.png'), pygame.image.load('BossAL03.png'), pygame.image.load('BossAL04.png'), pygame.image.load('BossAL05.png'), pygame.image.load('BossAL06.png'), pygame.image.load('BossAL07.png'), pygame.image.load('BossAL08.png')]
-bossAWalkRight = [pygame.image.load('BossAR01.png'), pygame.image.load('BossAR02.png'), pygame.image.load('BossAR03.png'), pygame.image.load('BossAR04.png'), pygame.image.load('BossAR05.png'), pygame.image.load('BossAR06.png'), pygame.image.load('BossAR07.png'), pygame.image.load('BossAR08.png')]
-bossBWalkLeft =  [pygame.image.load('BossBL01.png'), pygame.image.load('BossBL02.png'), pygame.image.load('BossBL03.png'), pygame.image.load('BossBL04.png'), pygame.image.load('BossBL05.png'), pygame.image.load('BossBL06.png'), pygame.image.load('BossBL07.png'), pygame.image.load('BossBL08.png')]
-bossBWalkRight = [pygame.image.load('BossBR01.png'), pygame.image.load('BossBR02.png'), pygame.image.load('BossBR03.png'), pygame.image.load('BossBR04.png'), pygame.image.load('BossBR05.png'), pygame.image.load('BossBR06.png'), pygame.image.load('BossBR07.png'), pygame.image.load('BossBR08.png')]
-bulletA = pygame.image.load('BulletA.png')
-bulletB = pygame.image.load('BulletB.png')
 
-bulletSound = pygame.mixer.Sound('bullet.wav')
-hitSound = pygame.mixer.Sound('hit.wav')
-music = pygame.mixer.music.load('music.mp3')
+bulletSound = pygame.mixer.Sound(os.path.join('audios','bullet.wav'))
+hitSound = pygame.mixer.Sound(os.path.join('audios','hit.wav'))
+music = pygame.mixer.music.load(os.path.join('audios','music.mp3'))
 pygame.mixer.music.play(-1)
 font1 = pygame.font.SysFont('comicsans',32,True,True)
-
-
 
 
 class mainPlayer(object):
@@ -217,7 +223,6 @@ class enemy1(object):
             self.walkCount = 0
 
         self.x += self.vel * self.facing
-        self.walkCount +=1
     
     def hit(self):
         if self.health >= 1 and player.lifeLeft >= 1:
@@ -286,9 +291,9 @@ class enemy2(object):
             elif self.y + self.height + self.vel >= self.bottomEnd:
                 self.facing = -1
                 self.walkCount = 0
-
+              
             self.y += self.vel * self.facing
-            self.walkCount +=1
+
         
         def hit(self):
             if self.health >= 1 and player.lifeLeft >= 1:
@@ -446,7 +451,6 @@ class boss2(object):
             self.vel += 1 * self.acceleration
 
         self.x += self.vel * self.facing
-        self.walkCount += 1
 
     def ifShot(self):
         for bullet in player.bullets:
@@ -471,9 +475,8 @@ class boss2(object):
             self.ifCollide()
             self.move()
             self.ifShot()
-
                               
-            if self.walkCount + 1 >= 24:
+            if self.walkCount >= len(self.walkLeft) * 3:
                 self.walkCount = 0
                 
             if self.facing == 1:
@@ -711,7 +714,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    win.blit(black,(0,0))
+    
     drawGameWindow()
     pygame.display.update()
   
