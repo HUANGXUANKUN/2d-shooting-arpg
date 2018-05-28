@@ -6,7 +6,7 @@ pygame.display.set_caption('Game of Thrones: Into the New World')
 
 def loadImageListInDict(path):
     '''
-        Create lists for every sub_dir, and load the files in sub_dirs into the lists.
+        Create a list for every sub_dir, and load the files(images only) under the sub_dir into the the list.
         Store the lists into a dictionary.
     '''
     listsDict = {}
@@ -22,7 +22,7 @@ def loadImageListInDict(path):
 
 def loadImageDict(path):
     '''
-        Load all the files(images) under the given directory into a dictionary.
+        Load all the files(images only) under the directory into a dictionary.
     '''
     imageDict = {}
     for image in os.listdir(path):
