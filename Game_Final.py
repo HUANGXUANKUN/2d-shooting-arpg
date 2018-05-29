@@ -1,60 +1,36 @@
 import pygame, os
 pygame.init()
-
 winSize = (640,480)
 win = pygame.display.set_mode(winSize)
 pygame.display.set_caption('Game of Thrones: Into the New World')
 
-def loadImageList(directory,name,imageType,imageNo):
-    '''To load the sprite images into a list'''
-    imageList = []
-    for iteration in range(1,imageNo):
-        if iteration >= 10 and name[-1] == '0':
-            name = name[:-1]
-        imageList.append(pygame.image.load(os.path.join(directory,name+str(iteration)+'.'+imageType)))                        
-    return imageList
-    
-playerWalkLeft = loadImageList('image/sprites/player','L0','png',9)
-playerWalkRight = loadImageList('image/sprites/player','R0','png',9)
-globinWalkLeft = loadImageList('image/sprites/globin','globinL0','png',11)
-globinWalkRight = loadImageList('image/sprites/globin','globinR0','png',11)
-ghostFaceLeft = loadImageList('image/sprites/ghost','ghostL','png',8)
-ghostFaceRight = loadImageList('image/sprites/ghost','ghostR','png',8)
-monsterFaceLeft = loadImageList('image/sprites/monster','monsterL','png',8)
-monsterTurning = loadImageList('image/sprites/monster','monsterTurn','png',8)
-bossAWalkLeft = loadImageList('image/sprites/boss1','BossAL0','png',8)
-bossAWalkRight = loadImageList('image/sprites/boss1','BossAR0','png',8)
-bossBWalkLeft = loadImageList('image/sprites/boss2','BossBL0','png',8)
-bossBWalkRight = loadImageList('image/sprites/boss2','BossBR0','png',8)
+def loadImageListInDict(path):
+    '''
+        Create lists for every sub_dir, and load the files in sub_dirs into the lists.
+        Store the lists into a dictionary.
+    '''
+    listsDict = {}
+    for folder in os.listdir(path):
+        subPath = os.path.join(path, folder)
+        if os.path.isdir(subPath):
+            listsDict[folder] = []
+            for image in os.listdir(subPath):
+                if os.path.isfile(os.path.join(subPath,image)):
+                    listsDict[folder].append(pygame.image.load(os.path.join(subPath,image)))
+    return listsDict
 
-bgMode = pygame.image.load(os.path.join("image/backgrounds",'modeChoose.png'))
-bg1 = pygame.image.load(os.path.join("image/backgrounds",'bg1.png'))
-bg2 = pygame.image.load(os.path.join("image/backgrounds",'bg2.png'))
-bg3 = pygame.image.load(os.path.join("image/backgrounds",'bg3.png'))
-bg1Lost = pygame.image.load(os.path.join("image/backgrounds",'bg1_Lost.png'))
-bg2Lost = pygame.image.load(os.path.join("image/backgrounds",'bg2_Lost.png'))
-bg3Lost = pygame.image.load(os.path.join("image/backgrounds",'bg3_Lost.png'))
-bgWin = pygame.image.load(os.path.join("image/backgrounds",'Win.png'))
-bgWinHard = pygame.image.load(os.path.join("image/backgrounds",'WinHard.png'))
-bgWisdomWinPath = pygame.image.load(os.path.join("image/backgrounds",'WisdomWinPath.png'))
-bgWisdomWin = pygame.image.load(os.path.join("image/backgrounds",'WisdomWin.png'))
-bgWisdomWinPathHard = pygame.image.load(os.path.join("image/backgrounds",'WisdomWinPathHard.png'))
-bgWisdomWinHard = pygame.image.load(os.path.join("image/backgrounds",'WisdomWinHard.png'))
-bgPerfectWinPath = pygame.image.load(os.path.join("image/backgrounds",'PerfectWinPath.png'))
-bgPerfectWin = pygame.image.load(os.path.join("image/backgrounds",'PerfectWin.png'))
-bgPerfectWinPathHard = pygame.image.load(os.path.join("image/backgrounds",'PerfectWinPathHard.png'))
-bgPerfectWinHard = pygame.image.load(os.path.join("image/backgrounds",'PerfectWinHard.png'))
-bgPeaceWinPath = pygame.image.load(os.path.join("image/backgrounds",'PeaceWinPath.png'))
-bgPeaceWin = pygame.image.load(os.path.join("image/backgrounds",'PeaceWin.png'))
-bulletA = pygame.image.load(os.path.join('image/features','BulletA.png'))
-bulletB = pygame.image.load(os.path.join('image/features','BulletB.png'))
-heartImage = pygame.image.load(os.path.join('image/features','heart.png'))
 
-bulletSound = pygame.mixer.Sound(os.path.join('audios','bullet.wav'))
-hitSound = pygame.mixer.Sound(os.path.join('audios','hit.wav'))
-music = pygame.mixer.music.load(os.path.join('audios','music.mp3'))
-pygame.mixer.music.play(-1)
-font1 = pygame.font.SysFont('comicsans',32,True,True)
+def loadImageDict(path):
+    '''
+        Load all the files(images) under the given directory into a dictionary.
+    '''
+    imageDict = {}
+    for image in os.listdir(path):
+        subPath = os.path.join(path, image)
+        if os.path.isfile(subPath):
+            imageDict[os.path.splitext(image)[0]] = pygame.image.load(subPath)
+    return imageDict
+
 
 class mainPlayer(object):
     def __init__(self, x, y, width, height, vel, lifeLeft, walkLeft,walkRight,bulletImage):
@@ -119,7 +95,7 @@ class mainPlayer(object):
                 self.isJumping = False
                 self.jumpPow = 10
 
-        '''Shooting activated'''
+        '''Shooting activation'''
         if self.shootLoop >= 1 and self.shootLoop <= 8:
             self.shootLoop += 1
         else:
@@ -472,6 +448,7 @@ class boss2(object):
             pygame.draw.rect(win,(250,0,0),(self.hitbox[0] - 10,self.hitbox[1]-10,self.hitbox[2] + 20,8)) 
             pygame.draw.rect(win,(0,128,0),(self.hitbox[0] - 10,self.hitbox[1]-10,round(self.health / self.fullHealth * (self.hitbox[2]+ 20)) ,8))    
 ##            pygame.draw.rect(win,(255,0,0),(self.hitbox),2)
+
             
 def setModeEasy():
     global player_health, enemy1_vel, enemy2A_vel,enemy2B_vel,enemy2C_vel,enemy2D_vel, bossA_bulletVel,bossB_health, bossB_acceleration
@@ -498,40 +475,42 @@ def setModeHard():
     bossB_acceleration = 3
 
 def defineFigures():
+    '''Create objects (player and enemies) '''
     setModeEasy()
     global player, enemyA, enemyB, enemyC, enemyD, enemyE, enemyF, enemyG, enemyH, enemyI, bossA, bossB 
-    player = mainPlayer(20, 400 -48, 25, 48, 5, player_health, playerWalkLeft, playerWalkRight, bulletA)
-    enemyA = enemy1(500, 400 - 52, 30 , 52, 100, 400, -1, enemy1_vel, 3, globinWalkLeft, globinWalkRight)
-    enemyB = enemy1(300 ,400 - 52, 30,52,100,590,1,enemy1_vel,3, globinWalkLeft, globinWalkRight)
-    enemyC = enemy2(350 ,200,57,86,60,400,-1,enemy2A_vel,10, monsterFaceLeft, monsterTurning)
-    enemyD = enemy2(450 ,200,57,86,60,400,1,enemy2A_vel,10, monsterFaceLeft, monsterTurning)
-    enemyE = enemy2(150 ,200,87,110,60,400,-1,enemy2B_vel,10, ghostFaceLeft, ghostFaceRight)
-    enemyF = enemy2(250 ,200,57,86,60,400,1,enemy2C_vel,10, monsterFaceLeft, monsterTurning)
-    enemyG = enemy2(350 ,200,87,110,60,400,-1,enemy2B_vel,10, ghostFaceLeft, ghostFaceRight)
-    enemyH = enemy2(450 ,200,57,86,60,400,1,enemy2C_vel,10, monsterFaceLeft, monsterTurning)
-    enemyI = enemy2(550 ,200,87,110,60,400,-1,enemy2D_vel,10, ghostFaceLeft, ghostFaceRight)
-    bossA = boss1(630 - 180, 400 - 200, 180, 200, -1, 20, bossAWalkLeft, bossAWalkRight,bossA_bulletVel, bulletB)
-    bossB = boss2(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, bossBWalkLeft, bossBWalkRight)
+    player = mainPlayer(20, 400 -48, 25, 48, 5, player_health, spriteLists['PlayerL'], spriteLists['PlayerR'], featureDict['bulletA'])
+    enemyA = enemy1(500, 400 - 52, 30 , 52, 100, 400, -1, enemy1_vel, 3, spriteLists['GlobinL'], spriteLists['GlobinR'])
+    enemyB = enemy1(300 ,400 - 52, 30,52,100,590,1,enemy1_vel,3, spriteLists['GlobinL'], spriteLists['GlobinR'])
+    enemyC = enemy2(350 ,200,57,86,60,400,-1,enemy2A_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyD = enemy2(450 ,200,57,86,60,400,1,enemy2A_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyE = enemy2(150 ,200,87,110,60,400,-1,enemy2B_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
+    enemyF = enemy2(250 ,200,57,86,60,400,1,enemy2C_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyG = enemy2(350 ,200,87,110,60,400,-1,enemy2B_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
+    enemyH = enemy2(450 ,200,57,86,60,400,1,enemy2C_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyI = enemy2(550 ,200,87,110,60,400,-1,enemy2D_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
+    bossA = boss1(630 - 180, 400 - 200, 180, 200, -1, 20, spriteLists['BossAL'], spriteLists['BossAR'], bossA_bulletVel, featureDict['bulletB'])
+    bossB = boss2(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, spriteLists['BossBL'], spriteLists['BossBR'])
 
 def __init__figures():
-    player.__init__(20, 400 -48, 25, 48, 5, player_health, playerWalkLeft, playerWalkRight, bulletA)
-    enemyA.__init__(500, 400 - 52, 30, 52, 100, 400, -1, enemy1_vel, 3, globinWalkLeft, globinWalkRight)
-    enemyB.__init__(300 ,400 - 52, 30, 52,100,590,1,enemy1_vel,3, globinWalkLeft, globinWalkRight)
-    enemyC.__init__(350 , 200, 57, 86, 60, 400,-1,enemy2A_vel,10, monsterFaceLeft, monsterTurning)
-    enemyD.__init__(450 , 200, 57, 86, 60, 400,1,enemy2A_vel,10, monsterFaceLeft, monsterTurning)
-    enemyE.__init__(150 , 200, 87, 110, 60, 400,-1,enemy2B_vel,10, ghostFaceLeft, ghostFaceRight)
-    enemyF.__init__(250 , 200, 57, 86, 60, 400,1,enemy2C_vel,10, monsterFaceLeft, monsterTurning)
-    enemyG.__init__(350 , 200, 87, 110, 60, 400,-1,enemy2B_vel,10, ghostFaceLeft, ghostFaceRight)
-    enemyH.__init__(450 , 200, 57, 86, 60, 400,1,enemy2C_vel,10, monsterFaceLeft, monsterTurning)
-    enemyI.__init__(550 , 200, 87, 110, 60, 400,-1,enemy2D_vel,10, ghostFaceLeft, ghostFaceRight)
-    bossA.__init__(630 - 180, 400 - 200, 180, 200, -1, 20, bossAWalkLeft, bossAWalkRight,bossA_bulletVel, bulletB)
-    bossB.__init__(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, bossBWalkLeft, bossBWalkRight)
+    '''Initialise objects (player and enemies)'''
+    player.__init__(20, 400 -48, 25, 48, 5, player_health, spriteLists['PlayerL'], spriteLists['PlayerR'], featureDict['bulletA'])
+    enemyA.__init__(500, 400 - 52, 30, 52, 100, 400, -1, enemy1_vel, 3,spriteLists['GlobinL'], spriteLists['GlobinR'])
+    enemyB.__init__(300 ,400 - 52, 30, 52,100,590,1,enemy1_vel,3, spriteLists['GlobinL'], spriteLists['GlobinR'])
+    enemyC.__init__(350 , 200, 57, 86, 60, 400,-1,enemy2A_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyD.__init__(450 , 200, 57, 86, 60, 400,1,enemy2A_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyE.__init__(150 , 200, 87, 110, 60, 400,-1,enemy2B_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
+    enemyF.__init__(250 , 200, 57, 86, 60, 400,1,enemy2C_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyG.__init__(350 , 200, 87, 110, 60, 400,-1,enemy2B_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
+    enemyH.__init__(450 , 200, 57, 86, 60, 400,1,enemy2C_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
+    enemyI.__init__(550 , 200, 87, 110, 60, 400,-1,enemy2D_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
+    bossA.__init__(630 - 180, 400 - 200, 180, 200, -1, 20, spriteLists['BossAL'], spriteLists['BossAR'],bossA_bulletVel, featureDict['bulletB'])
+    bossB.__init__(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, spriteLists['BossBL'], spriteLists['BossBR'])
   
 def drawGameWindow():
     global roundNo,mode,isLost,isWin,isWisdomWin,isPerfectWin,isPeaceWin
                         
     if mode == 0:
-        win.blit(bgMode,(0,0))
+        win.blit(bgDict['ModeChoose'],(0,0))
         keys = pygame.key.get_pressed()
         if keys[pygame.K_e]:
             mode = 1
@@ -544,7 +523,7 @@ def drawGameWindow():
     
     elif not isWin and not isLost:
         if roundNo == 1:
-            win.blit(bg1,(0,0))
+            win.blit(bgDict['BgRound1'],(0,0))
             player.draw(win)
             enemyA.draw(win)
             enemyB.draw(win)
@@ -552,7 +531,7 @@ def drawGameWindow():
             enemyD.draw(win)
 
         elif roundNo == 2:
-            win.blit(bg2,(0,0))
+            win.blit(bgDict['BgRound2'],(0,0))
             player.draw(win)
             enemyE.draw(win)
             enemyF.draw(win)
@@ -561,7 +540,7 @@ def drawGameWindow():
             enemyI.draw(win)
 
         elif roundNo == 3:
-            win.blit(bg3,(0,0))
+            win.blit(bgDict['BgRound3'],(0,0))
             player.draw(win)
             bossA.draw(win)
             if bossA.health < 1:
@@ -579,14 +558,12 @@ def drawGameWindow():
 
             if not (isPeaceWin or isWisdomWin or isPerfectWin):
                 isWin = True
-##                print('normal win at round4')
 
         if isPeaceWin or isWisdomWin or isPerfectWin:
             if roundNo == 4:
                 if isPeaceWin:
-                    win.blit(bgPeaceWinPath,(0,0))
+                    win.blit(bgDict['PeaceWinPath'],(0,0))
                     player.draw(win)
-##                    print('isPeaceWin = True, RoundNo = 4')
                 else:
                     if isWisdomWin:
                         roundNo += 1
@@ -596,75 +573,69 @@ def drawGameWindow():
             if roundNo == 5:
                 if isWisdomWin:
                     if mode == 1:
-                        win.blit(bgWisdomWinPath,(0,0))
+                        win.blit(bgDict['WisdomWinPath'],(0,0))
                     else:
-                        win.blit(bgWisdomWinPathHard,(0,0))
+                        win.blit(bgDict['WisdomWinPathHard'],(0,0))
                     player.draw(win)
-##                    print('isWisdomWin = True, RoundNo = 5')
                 else:
                     if isPerfectWin:
                         roundNo += 1
                     else:
                         isWin = True
-##                        print('isWin at round 5')
 
             if roundNo == 6:
                 if isPerfectWin:
                     if mode == 1:
-                        win.blit(bgPerfectWinPath,(0,0))
+                        win.blit(bgDict['PerfectWinPath'],(0,0))
                     else:
-                        win.blit(bgPerfectWinPathHard,(0,0))
+                        win.blit(bgDict['PerfectWinPathHard'],(0,0))
                     player.draw(win)
-##                    print('isPerfect = True, RoundNo = 6')
                 else:
                     isWin = True
-##                    print('isWin at round6')
 
             if roundNo == 7:
                 isWin = True
-##                print('is win at round 7')
 
         if player.x + player.vel > winSize[0]:
             roundNo += 1
-##            print('roundNo' + str(roundNo))
             player.x = player.rebornLoc[0]
             player.bullets = []
 
         if player.lifeLeft < 1:
             isLost = True
 
-        win.blit(heartImage,(25,35))
+        win.blit(featureDict['heart'],(25,35))
         lifeLeftText = font1.render(' X '+ str(player.lifeLeft),1,(255,250,250))
         win.blit(lifeLeftText,(45,35))
 
     else:
         if isLost:
             if roundNo == 1:
-                win.blit(bg1Lost,(0,0))
+                win.blit(bgDict['BgRound1Lost'],(0,0))
             if roundNo == 2:
-                win.blit(bg2Lost,(0,0))
+                win.blit(bgDict['BgRound2Lost'],(0,0))
             if roundNo == 3:
-                win.blit(bg3Lost,(0,0))
+                win.blit(bgDict['BgRound3Lost'],(0,0))
         else:
             if mode == 1:
                 if isPerfectWin:
-                    win.blit(bgPerfectWin,(0,0))
+                    win.blit(bgDict['PerfectWin'],(0,0))
                 elif isWisdomWin:
-                    win.blit(bgWisdomWin,(0,0))
+                    win.blit(bgDict['WisdomWin'],(0,0))
                 elif isPeaceWin:
-                    win.blit(bgPeaceWin,(0,0))
+                    win.blit(bgDict['PeaceWin'],(0,0))
                 else:
-                    win.blit(bgWin,(0,0))
+                    win.blit(bgDict['Win'],(0,0))
                     
             else:
                 if isPerfectWin:
-                    win.blit(bgPerfectWinHard,(0,0))
+                    win.blit(bgDict['PerfectWinHard'],(0,0))
                 elif isWisdomWin:
-                    win.blit(bgWisdomWinHard,(0,0))
+                    win.blit(bgDict['WisdomWinHard'],(0,0))
                 elif isPeaceWin:
-                    win.blit(bgPeaceWin,(0,0))
+                    win.blit(bgDict['PeaceWin'],(0,0))
                 else:
-                    win.blit(bgWinHard,(0,0))
+                    win.blit(bgDict['WinHard'],(0,0))
             
         keys = pygame.key.get_pressed()
         if keys[pygame.K_r]:
@@ -676,7 +647,18 @@ def drawGameWindow():
             isPerfectWin = False
             isPeaceWin = False
 
-##mainloop 
+
+##mainloop        
+bgDict = loadImageDict('image/backgrounds')
+featureDict = loadImageDict('image/features')
+spriteLists = loadImageListInDict('image/sprites')
+
+bulletSound = pygame.mixer.Sound(os.path.join('audios','bullet.wav'))
+hitSound = pygame.mixer.Sound(os.path.join('audios','hit.wav'))
+music = pygame.mixer.music.load(os.path.join('audios','music.mp3'))
+pygame.mixer.music.play(-1)
+font1 = pygame.font.SysFont('comicsans',32,True,True)
+
 clock = pygame.time.Clock()
 roundNo = 1
 mode = 0
