@@ -6,7 +6,7 @@ pygame.display.set_caption('Game of Thrones: Into the New World')
 
 def loadImageListInDict(path):
     '''
-        Create a list for every sub_dir, and load the files(images only) under the sub_dir into the the list.
+        Create a list for every sub_dir, and load the files(only images) under the sub_dir into the the list.
         Store the lists into a dictionary.
     '''
     listsDict = {}
@@ -22,7 +22,7 @@ def loadImageListInDict(path):
 
 def loadImageDict(path):
     '''
-        Load all the files(images only) under the directory into a dictionary.
+        Load all the files(only images) under the directory into a dictionary.
     '''
     imageDict = {}
     for image in os.listdir(path):
@@ -33,6 +33,12 @@ def loadImageDict(path):
 
 
 class mainPlayer(object):
+    '''
+        This object class defines attributes of a player. 
+        Allow the entering of up, down, left, right and space keys to control the movement of the object.
+        Shooting is only allowed outside the safezone(self.x > 100). 
+        Character sprites (left and right) and a bullet image is needed as arguments.
+    '''
     def __init__(self, x, y, width, height, vel, lifeLeft, walkLeft,walkRight,bulletImage):
         self.x = x
         self.y = y
@@ -153,6 +159,11 @@ class mainPlayer(object):
 
 
 class projectile(object):
+    '''
+        This object class defines attributes of a bullet. 
+        The x instance always change in accordance to the velocity instance.
+        A bullet image is needed as arguments.    
+    '''
     def __init__(self,x,y,radius,vel,bulletImage):
         self.x = x 
         self.y = y 
@@ -166,6 +177,15 @@ class projectile(object):
 
 
 class enemy1(object):
+    '''
+        This object represents an enemy. 
+        It moves in x direction, and it will only be moving back and fore in a given boundary.
+        Whenever it collides with player's hitbox, player's health point minus 1.
+        Whenever its hitbox collides with player's bullet, its health point minus 1.
+        When its healthpoint < 1, all of its functions terminate.
+        Enemy sprites is needed as argument.
+    '''
+
     def __init__(self,x,y,width,height,leftEnd,rightEnd,facing,vel,health,walkLeft,walkRight):
         self.x = x
         self.y = y
@@ -235,6 +255,15 @@ class enemy1(object):
 
 
 class enemy2(object):
+    '''
+        This object class defines attributes of an enemy. 
+        It moves in y direction, and it will only be moving up and down in a given boundary.
+        Whenever it collides with player's hitbox, player's health point minus 1.
+        Whenever its hitbox collides with player's bullet, its health point minus 1.
+        When its healthpoint < 1, all of its functions terminate.
+        Enemy sprites is needed as argument.
+    '''
+
         def __init__(self,x,y,width,height,topEnd,bottomEnd,facing,vel,health,walkLeft,walkRight):
             self.x = x
             self.y = y
@@ -297,7 +326,16 @@ class enemy2(object):
 ##                pygame.draw.rect(win,(255,0,0),(self.hitbox),2)
         
 
-class boss1(object):   
+class boss1(object):
+    '''
+        This object class defines attributes of an enemy (a boss). 
+        It is at a stationary position, and is shooting in only one direction.
+        Whenever it collides with player's hitbox, player's health point minus 1.
+        Whenever its bullet collides with player's hitboxs, player's healthpoint minus 1.
+        Whenever its hitbox collides with player's bullet, its health point minus 1.
+        When its healthpoint < 1, all of its functions terminate.
+        Enemy sprites and a image of bullet are needed as arguments.
+    '''
     def __init__(self,x,y,width,height,facing,health,walkLeft,walkRight,bulletVel,bulletImage):
         self.x = x
         self.y = y
@@ -377,6 +415,15 @@ class boss1(object):
 
             
 class boss2(object):
+    '''
+        This object class defines attributes of (a boss). 
+        It accelerates from velocity zero to a given vel instance in x direction. 
+        It will only be moving back and fore in a given boundary.
+        Whenever it collides with player's hitbox, player's health point minus 1.
+        Whenever its hitbox collides with player's bullet, its health point minus 1.
+        When its healthpoint < 1, all of its functions terminate.
+        Enemy sprites is needed as argument.
+    '''
     def __init__(self,x,y,width,height,leftEnd,rightEnd,facing,health, acceleration, walkLeft,walkRight):
         self.x = x
         self.y = y
@@ -648,11 +695,13 @@ def drawGameWindow():
             isPeaceWin = False
 
 
-##mainloop        
+##mainloop
+'''Load all the images needed'''
 bgDict = loadImageDict('image/backgrounds')
 featureDict = loadImageDict('image/features')
 spriteLists = loadImageListInDict('image/sprites')
 
+'''Load all the sound tracks needed'''
 bulletSound = pygame.mixer.Sound(os.path.join('audios','bullet.wav'))
 hitSound = pygame.mixer.Sound(os.path.join('audios','hit.wav'))
 music = pygame.mixer.music.load(os.path.join('audios','music.mp3'))
