@@ -7,7 +7,8 @@ pygame.display.set_caption('Game of Thrones: Into the New World')
 def loadImageListInDict(path):
     '''
         Create a list for every sub_dir, and load the files(only images) under the sub_dir into the the list.
-        Store the lists into a dictionary.
+        Store the lists into a dictionary and return.
+        Directory is needed as argument.
     '''
     listsDict = {}
     for folder in os.listdir(path):
@@ -22,7 +23,8 @@ def loadImageListInDict(path):
 
 def loadImageDict(path):
     '''
-        Load all the files(only images) under the directory into a dictionary.
+        Load all the files(only images) under the directory into a dictionary and return.
+        Directory is needed as argument.
     '''
     imageDict = {}
     for image in os.listdir(path):
@@ -37,7 +39,7 @@ class mainPlayer(object):
         This object class defines attributes of a player. 
         Allow the entering of up, down, left, right and space keys to control the movement of the object.
         Shooting is only allowed outside the safezone(self.x > 100). 
-        Character sprites (left and right) and a bullet image is needed as arguments.
+        Character sprites (left and right) and a bullet image is needed as initial data.
     '''
     def __init__(self, x, y, width, height, vel, lifeLeft, walkLeft,walkRight,bulletImage):
         self.x = x
@@ -161,8 +163,7 @@ class mainPlayer(object):
 class projectile(object):
     '''
         This object class defines attributes of a bullet. 
-        The x instance always change in accordance to the velocity instance.
-        A bullet image is needed as arguments.    
+        The x instance always change in accordance to the velocity instance.    
     '''
     def __init__(self,x,y,radius,vel,bulletImage):
         self.x = x 
@@ -261,7 +262,7 @@ class enemy2(object):
         Whenever it collides with player's hitbox, player's health point minus 1.
         Whenever its hitbox collides with player's bullet, its health point minus 1.
         When its healthpoint < 1, all of its functions terminate.
-        Enemy sprites is needed as argument.
+        Enemy sprites(L & R) is needed as initial data.
     '''
 
         def __init__(self,x,y,width,height,topEnd,bottomEnd,facing,vel,health,walkLeft,walkRight):
@@ -334,7 +335,7 @@ class boss1(object):
         Whenever its bullet collides with player's hitboxs, player's healthpoint minus 1.
         Whenever its hitbox collides with player's bullet, its health point minus 1.
         When its healthpoint < 1, all of its functions terminate.
-        Enemy sprites and a image of bullet are needed as arguments.
+        Enemy sprites and a image of bullet are needed as initial data.
     '''
     def __init__(self,x,y,width,height,facing,health,walkLeft,walkRight,bulletVel,bulletImage):
         self.x = x
@@ -422,7 +423,7 @@ class boss2(object):
         Whenever it collides with player's hitbox, player's health point minus 1.
         Whenever its hitbox collides with player's bullet, its health point minus 1.
         When its healthpoint < 1, all of its functions terminate.
-        Enemy sprites is needed as argument.
+        Enemy sprites (L & R) are needed as intial data.
     '''
     def __init__(self,x,y,width,height,leftEnd,rightEnd,facing,health, acceleration, walkLeft,walkRight):
         self.x = x
@@ -554,9 +555,11 @@ def __init__figures():
     bossB.__init__(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, spriteLists['BossBL'], spriteLists['BossBR'])
   
 def drawGameWindow():
+    ''' Excecute all draw procedures of the objects(player, enemies & bullets)'''
     global roundNo,mode,isLost,isWin,isWisdomWin,isPerfectWin,isPeaceWin
                         
     if mode == 0:
+    '''Allow player to choose modes (easy or hard) at the beginning of the game.'''
         win.blit(bgDict['ModeChoose'],(0,0))
         keys = pygame.key.get_pressed()
         if keys[pygame.K_e]:
@@ -569,6 +572,7 @@ def drawGameWindow():
             __init__figures()
     
     elif not isWin and not isLost:
+        '''Check the round number to consider which enemies and background image to draw.'''
         if roundNo == 1:
             win.blit(bgDict['BgRound1'],(0,0))
             player.draw(win)
@@ -686,6 +690,7 @@ def drawGameWindow():
             
         keys = pygame.key.get_pressed()
         if keys[pygame.K_r]:
+            '''Initalise all global variables to restart the game (Back to the mode choosing stage.).'''
             mode = 0
             roundNo = 1
             isLost = False
