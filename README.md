@@ -1,6 +1,5 @@
 # Game-of-Thrones---Into-the-New-World
 # My first computing project for practicing.
-# Pygame and OS libaries are used.
 
 Youtube Video Demo (Must Watch!!!): https://youtu.be/8c68_SL-nw4
 
