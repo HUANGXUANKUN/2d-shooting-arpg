@@ -265,65 +265,65 @@ class enemy2(object):
         Enemy sprites(L & R) is needed as initial data.
     '''
 
-        def __init__(self,x,y,width,height,topEnd,bottomEnd,facing,vel,health,walkLeft,walkRight):
-            self.x = x
-            self.y = y
-            self.width = width
-            self.height = height
-            self.topEnd = topEnd
-            self.bottomEnd = bottomEnd
-            self.walkCount = 0
-            self.vel = vel
-            '''facing = 1 or -1, determines the walking direction of the object'''
-            self.facing = facing
-            self.hitbox = (round(self.x + self.width * 0.1), round(self.y + self.width * 0.1), round(self.width * 0.8), round(self.height * 0.8))
-            self.health = health
-            self.isDefeated = False
-            self.walkUp = walkLeft
-            self.walkDown = walkRight
+    def __init__(self,x,y,width,height,topEnd,bottomEnd,facing,vel,health,walkLeft,walkRight):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.topEnd = topEnd
+        self.bottomEnd = bottomEnd
+        self.walkCount = 0
+        self.vel = vel
+        '''facing = 1 or -1, determines the walking direction of the object'''
+        self.facing = facing
+        self.hitbox = (round(self.x + self.width * 0.1), round(self.y + self.width * 0.1), round(self.width * 0.8), round(self.height * 0.8))
+        self.health = health
+        self.isDefeated = False
+        self.walkUp = walkLeft
+        self.walkDown = walkRight
 
-        def move(self):
-            if self.y - self.vel <= self.topEnd:
-                self.facing = 1
+    def move(self):
+        if self.y - self.vel <= self.topEnd:
+            self.facing = 1
+            self.walkCount = 0
+            
+        elif self.y + self.height + self.vel >= self.bottomEnd:
+            self.facing = -1
+            self.walkCount = 0
+          
+        self.y += self.vel * self.facing
+    
+    def hit(self):
+        if self.health >= 1 and player.lifeLeft >= 1:
+            for bullet in player.bullets:
+                '''When the edge of the bullet is perfectly within the hitbox of the enemy '''                  
+                if bullet.y - bullet.radius < self.hitbox[1] + self.hitbox[3] and bullet.y + bullet.radius > self.hitbox[1]:
+                    if bullet.x + bullet.radius > self.hitbox[0] and bullet.x - bullet.radius < self.hitbox [0] + self.hitbox[2]:
+                        hitSound.play()
+                        player.bullets.pop(player.bullets.index(bullet))                                                                                   
+
+    def ifCollide(self):
+        if player.hitbox[0] + player.hitbox[2] > self.hitbox[0] and player.hitbox[0] < self.hitbox[0] + self.hitbox[2]:
+            if player.hitbox[1] < self.hitbox[1] + self.hitbox[3] and player.hitbox[1] + player.hitbox[3] > self.hitbox[1]:
+                player.collision = True
+        
+    def draw(self,win):
+        if self.health >= 1:
+            self.ifCollide()
+            self.move()
+            self.hit()
+                              
+            if self.walkCount >= len(self.walkUp) * 3:
                 self.walkCount = 0
                 
-            elif self.y + self.height + self.vel >= self.bottomEnd:
-                self.facing = -1
-                self.walkCount = 0
-              
-            self.y += self.vel * self.facing
-        
-        def hit(self):
-            if self.health >= 1 and player.lifeLeft >= 1:
-                for bullet in player.bullets:
-                    '''When the edge of the bullet is perfectly within the hitbox of the enemy '''                  
-                    if bullet.y - bullet.radius < self.hitbox[1] + self.hitbox[3] and bullet.y + bullet.radius > self.hitbox[1]:
-                        if bullet.x + bullet.radius > self.hitbox[0] and bullet.x - bullet.radius < self.hitbox [0] + self.hitbox[2]:
-                            hitSound.play()
-                            player.bullets.pop(player.bullets.index(bullet))                                                                                   
+            if self.facing == 1:
+                win.blit(self.walkDown[self.walkCount //3],(self.x,self.y))
+                self.walkCount += 1
+            else:
+                win.blit(self.walkUp[self.walkCount //3],(self.x,self.y))
+                self.walkCount += 1
 
-        def ifCollide(self):
-            if player.hitbox[0] + player.hitbox[2] > self.hitbox[0] and player.hitbox[0] < self.hitbox[0] + self.hitbox[2]:
-                if player.hitbox[1] < self.hitbox[1] + self.hitbox[3] and player.hitbox[1] + player.hitbox[3] > self.hitbox[1]:
-                    player.collision = True
-            
-        def draw(self,win):
-            if self.health >= 1:
-                self.ifCollide()
-                self.move()
-                self.hit()
-                                  
-                if self.walkCount >= len(self.walkUp) * 3:
-                    self.walkCount = 0
-                    
-                if self.facing == 1:
-                    win.blit(self.walkDown[self.walkCount //3],(self.x,self.y))
-                    self.walkCount += 1
-                else:
-                    win.blit(self.walkUp[self.walkCount //3],(self.x,self.y))
-                    self.walkCount += 1
-  
-                self.hitbox = (round(self.x + self.width * 0.1), round(self.y + self.width * 0.1), round(self.width * 0.8), round(self.height * 0.8))
+            self.hitbox = (round(self.x + self.width * 0.1), round(self.y + self.width * 0.1), round(self.width * 0.8), round(self.height * 0.8))
 ##                pygame.draw.rect(win,(255,0,0),(self.hitbox),2)
         
 
@@ -536,7 +536,7 @@ def defineFigures():
     enemyG = enemy2(350 ,200,87,110,60,400,-1,enemy2B_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
     enemyH = enemy2(450 ,200,57,86,60,400,1,enemy2C_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
     enemyI = enemy2(550 ,200,87,110,60,400,-1,enemy2D_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
-    bossA = boss1(630 - 180, 400 - 200, 180, 200, -1, 20, spriteLists['BossAL'], spriteLists['BossAR'], bossA_bulletVel, featureDict['bulletB'])
+    bossA = boss1(630 - 180, 400 - 200, 180, 200, -1, 20, spriteLists['BossAL'], spriteLists['BossAR'], bossA_bulletVel, featureDict['BulletB'])
     bossB = boss2(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, spriteLists['BossBL'], spriteLists['BossBR'])
 
 def __init__figures():
@@ -551,15 +551,15 @@ def __init__figures():
     enemyG.__init__(350 , 200, 87, 110, 60, 400,-1,enemy2B_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
     enemyH.__init__(450 , 200, 57, 86, 60, 400,1,enemy2C_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
     enemyI.__init__(550 , 200, 87, 110, 60, 400,-1,enemy2D_vel,10, spriteLists['GhostL'], spriteLists['GhostR'])
-    bossA.__init__(630 - 180, 400 - 200, 180, 200, -1, 20, spriteLists['BossAL'], spriteLists['BossAR'],bossA_bulletVel, featureDict['bulletB'])
+    bossA.__init__(630 - 180, 400 - 200, 180, 200, -1, 20, spriteLists['BossAL'], spriteLists['BossAR'],bossA_bulletVel, featureDict['BulletB'])
     bossB.__init__(630 - 72,400 - 80, 72, 80, 100, 630 - 72, -1, bossB_health, bossB_acceleration, spriteLists['BossBL'], spriteLists['BossBR'])
   
 def drawGameWindow():
     ''' Excecute all draw procedures of the objects(player, enemies & bullets)'''
     global roundNo,mode,isLost,isWin,isWisdomWin,isPerfectWin,isPeaceWin
                         
-    if mode == 0:
     '''Allow player to choose modes (easy or hard) at the beginning of the game.'''
+    if mode == 0:
         win.blit(bgDict['ModeChoose'],(0,0))
         keys = pygame.key.get_pressed()
         if keys[pygame.K_e]:
