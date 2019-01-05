@@ -526,7 +526,7 @@ def defineFigures():
     '''Create objects (player and enemies) '''
     setModeEasy()
     global player, enemyA, enemyB, enemyC, enemyD, enemyE, enemyF, enemyG, enemyH, enemyI, bossA, bossB 
-    player = mainPlayer(20, 400 -48, 25, 48, 5, player_health, spriteLists['PlayerL'], spriteLists['PlayerR'], featureDict['bulletA'])
+    player = mainPlayer(20, 400 -48, 25, 48, 5, player_health, spriteLists['PlayerL'], spriteLists['PlayerR'], featureDict['BulletA'])
     enemyA = enemy1(500, 400 - 52, 30 , 52, 100, 400, -1, enemy1_vel, 3, spriteLists['GlobinL'], spriteLists['GlobinR'])
     enemyB = enemy1(300 ,400 - 52, 30,52,100,590,1,enemy1_vel,3, spriteLists['GlobinL'], spriteLists['GlobinR'])
     enemyC = enemy2(350 ,200,57,86,60,400,-1,enemy2A_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
@@ -541,7 +541,7 @@ def defineFigures():
 
 def __init__figures():
     '''Initialise objects (player and enemies)'''
-    player.__init__(20, 400 -48, 25, 48, 5, player_health, spriteLists['PlayerL'], spriteLists['PlayerR'], featureDict['bulletA'])
+    player.__init__(20, 400 -48, 25, 48, 5, player_health, spriteLists['PlayerL'], spriteLists['PlayerR'], featureDict['BulletA'])
     enemyA.__init__(500, 400 - 52, 30, 52, 100, 400, -1, enemy1_vel, 3,spriteLists['GlobinL'], spriteLists['GlobinR'])
     enemyB.__init__(300 ,400 - 52, 30, 52,100,590,1,enemy1_vel,3, spriteLists['GlobinL'], spriteLists['GlobinR'])
     enemyC.__init__(350 , 200, 57, 86, 60, 400,-1,enemy2A_vel,10, spriteLists['MonsterL'], spriteLists['MonsterRotate'])
