@@ -1,5 +1,5 @@
-# Game-of-Thrones---Into-the-New-World
-# My first computing project for practicing.
+# Simple 2D Act RPG game
+# My first computing project for Python & OOP practicing.
 
 Youtube Video Demo (Must Watch!!!): https://youtu.be/8c68_SL-nw4
 
