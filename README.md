@@ -1,9 +1,10 @@
-# Simple 2D Act RPG game
 # My first computing project for Python & OOP practice.
 
 Youtube Video Demo (Must Watch!!!): https://youtu.be/8c68_SL-nw4
 
-run Game_Final.py
+User Guide
+1. Install package `pygame`
+2. run `Game_Final.py`
 
 Choosing the mode\
 ![](screenshot/starting.png)
