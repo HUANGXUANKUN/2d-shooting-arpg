@@ -1,4 +1,4 @@
-# My first computing project for Python & OOP practice.
+My first computing project for Python & OOP practice
 
 Youtube Video Demo (Must Watch!!!): https://youtu.be/8c68_SL-nw4
 
