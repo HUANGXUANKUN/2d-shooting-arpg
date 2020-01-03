@@ -4,7 +4,7 @@ Youtube Video Demo: https://youtu.be/8c68_SL-nw4
 
 # User Guide
 1. Install package `pygame`
-2. run `Game_Final.py`
+2. run `python Game_Final.py`
 
 
 Choosing the mode\
